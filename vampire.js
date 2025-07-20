@@ -50,6 +50,52 @@ class Vampire {
   closestCommonAncestor(vampire) {
 
   }
+
+  // Returns the vampire object with that name, or null if no vampire exists with that name
+  vampireWithName(name) {
+  
+    if (this.name === name) {
+      return this
+    } 
+    for (const vamp of this.offspring) {
+      const vampireWithName = vamp.vampireWithName(name);
+      if(vampireWithName !== null){
+        return vampireWithName
+      }
+    }
+
+    return null
+  }
+
+  // Returns the total number of vampires that exist
+  get totalDescendents() {
+    let totalVampires = 0;
+
+    for (const vamp of this.offspring){
+      totalVampires++
+      totalVampires += vamp.totalDescendents
+    }
+
+    return totalVampires
+  }
+
+  // Returns an array of all the vampires that were converted after 1980
+  get allMillennialVampires() {
+
+    let millVampires = []
+
+    if(this.yearConverted > 1980) {
+      millVampires.push(this)
+    } 
+
+    for(const vamp of this.offspring){
+      const millenialVampires = vamp.allMillennialVampires
+      millVampires = millVampires.concat(millenialVampires)
+    }
+    return millVampires
+  }
+
+
 }
 
 module.exports = Vampire;
